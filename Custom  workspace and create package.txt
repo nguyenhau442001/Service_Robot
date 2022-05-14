@@ -1,0 +1,13 @@
+#And then, we move on to newly created folder
+~$ cd ros_start_starters_ws/
+cd src/
+#Init workspace (create cmakelist)
+$ catkin_init_workspace
+#Create new package
+$ catkin_create_pkg name_package rospy std_msgs #package create
+
+#change directory to initial folder (ros_starter_ws),implement catkin_make syntax
+#Run roscore command
+
+source devel/setup.bash
+
