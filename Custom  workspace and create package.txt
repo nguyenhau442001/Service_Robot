@@ -1,3 +1,5 @@
+#Firstly, we have to make directory for package, example package's name is ros_starter_ws
+~$ mkdir -p ~/ros_starter_ws/src
 #And then, we move on to newly created folder
 ~$ cd ros_start_starters_ws/
 cd src/
