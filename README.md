@@ -19,7 +19,6 @@ This ROS package implements SLAM on a 2 wheeled differential drive robot to map 
 
     $ sudo apt-get install ros-noetic-dwa-local-planner
 
-    $ sudo apt-get install ros-noetic-joy
 # URDF 
 ![image](https://user-images.githubusercontent.com/105471622/174599261-1599c94a-85e2-402d-a6ea-d82d54f4b950.png)
 
