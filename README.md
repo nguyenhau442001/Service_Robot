@@ -5,6 +5,7 @@ I have consulted the documentation as below:
 
 2.https://devanshdhrafani.github.io/blog/2020/11/01/diffdrive.html?fbclid=IwAR2rnmI8jEJEn0mfh6qbEmEooA_AI3zIyLfcTQ-vht6G5wXuQnkvXc8n0ow
 
+Link youtube: https://www.youtube.com/watch?v=k0roG6xbp_c&t=11s
 
 This ROS package implements SLAM on a 2 wheeled differential drive robot to map an unknown environment. A keyboard is used to teleoperate the robot in Gazebo. The map generated is then used for autonomous navigation using the ROS Navigation stack.
 # Installation
