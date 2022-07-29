@@ -11,7 +11,7 @@ This ROS package implements SLAM on a 2 wheeled differential drive robot to map 
 # Installation
 1. Build package from source: navigate to the source folder of your catkin workspace and build this package using:
 
-    $ git clone https://github.com/nguyenhau442001/Project_ROS-Robot-Operating-System-.git
+    $ git clone https://github.com/nguyenhau442001/Service_Robot.git
   
     $ cd ..
   
