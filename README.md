@@ -52,7 +52,6 @@ This is my robot when its standing in simulation environment GAZEBO.
 
 6. Copy the map file to ~/service_robot/maps/ directory and edit the .yaml file to match the path.
 
-
 # Autonomous Navigation
 
 This package uses the ROS Navigation stack to autonomously navigate through the map created using gmapping.

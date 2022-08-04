@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">  
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+        <!-- JavaScript Bundle with Popper -->
+        <link href="model.css" rel="stylesheet"  >
+        <!-- <script type="text/javascript" src="model.scss"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="/ros_web_ws/roslibjs/build/roslib.js"></script>
+        <script src="/ros_web_ws/ros2djs/build/ros2d.js"></script>
+        <script type="text/javascript" src="http://static.robotwebtools.org/EaselJS/current/easeljs.min.js"></script>
+        <script type="text/javascript" src="http://static.robotwebtools.org/threejs/current/three.min.js"></script>
+        <script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+        <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+        <script type="text/javascript" src="http://static.robotwebtools.org/ros2djs/current/ros2d.min.js"></script>
+        <script type="text/javascript" src="http://static.robotwebtools.org/ros3djs/current/ros3d.min.js"></script>
+        <script type="text/javascript" src="ColladaLoader.js"></script>
+        <script type="text/javascript" src="ColladaLoader2.js"></script>
+        <script type="text/javascript" src="STLLoader.js"></script>
+      
+       
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.7.3/nipplejs.js"></script>
+        <script type="text/javascript" type="text/javascript">
+         
+        /**
+         * Setup all visualization elements when the page is loaded.
+         */
+        function init() {
+            // Connect to ROS.   
+            var ros= new ROSLIB.Ros();
+            ros.connect('ws://localhost:9090');
+            // Display communication status on web browser via id="status", default is closed 
+            ros.on('connection', function () {
+            document.getElementById("status").innerHTML = "Connected";
+            });
+
+            ros.on('error', function (error) {
+            document.getElementById("status").innerHTML = "Error";
+            });
+
+            ros.on('close', function () {
+            document.getElementById("status").innerHTML = "Closed";
+            });
+            
+            // Create marker (triangle shape)
+            var robotMarker =new ROS2D.NavigationArrow({
+                size:0.25,
+                strokeSize:0.05,
+                pulse:true
+            });
+            
+            var poseTopic = new ROSLIB.Topic(
+                {
+                    ros : ros,
+                    name : '/odom',
+                    messageType: 'nav_msgs/Odometry'
+                }
+            );     
+                poseTopic.subscribe(function (pose) {
+                document.getElementById("x").innerHTML = (pose.pose.pose.position.x).toFixed(2);
+                document.getElementById("y").innerHTML = (pose.pose.pose.position.y).toFixed(2);
+                document.getElementById("theta").innerHTML = (180*(pose.pose.pose.orientation.z)).toFixed(2);
+                robotMarker.x = pose.pose.pose.position.x;
+                robotMarker.y = -(pose.pose.pose.position.y);
+                robotMarker.rotation=-(180*(pose.pose.pose.orientation.z));
+
+                })
+                
+
+            //  CREATE A OBJECT TO SUBCRIBE /cmd_vel TOPIC     
+            var cmdTopic = new ROSLIB.Topic(
+                {
+                    ros : ros,
+                    name : '/cmd_vel',
+                    messageType: 'geometry_msgs/Twist'
+                }
+            );
+                cmdTopic.subscribe(function(n){document.getElementById("trans_speed").innerHTML=(n.linear.x).toFixed(2)
+                document.getElementById("angular_speed").innerHTML=(n.angular.z).toFixed(2)})                                   
+                ;
+
+            // 2D MAP
+            var viewer2d = new ROS2D.Viewer({
+            divID : 'map2d',
+            width : 400,
+            height : 400
+            });
+
+            var gridClient_2d = new ROS2D.OccupancyGridClient({
+            ros : ros,
+            rootObject : viewer2d.scene,
+            //Use this property in case of continuous updates
+            continuous: true
+            });
+
+            // Scale the canvas to fit to the map
+            gridClient_2d.on('change', function(){
+            viewer2d.scaleToDimensions(gridClient_2d.currentGrid.width, gridClient_2d.currentGrid.height);
+            viewer2d.shift(gridClient_2d.currentGrid.pose.position.x, gridClient_2d.currentGrid.pose.position.y);
+            });
+            
+            gridClient_2d.rootObject.addChild(robotMarker);
+            
+            // Create service call /navi_goals_node
+            var setlogger= new ROSLIB.Service({
+                ros:ros,
+                name:'/static_map',
+                serviceType: 'nav_msgs/GetMap'
+            })
+            setlogger.callService(function(){});
+            
+            //Notify status of robot (received or not)
+            var click_button = new ROSLIB.Topic(
+                {
+                    ros : ros,
+                    name : '/click_button',
+                    messageType: 'std_msgs/String'
+                }
+            );
+            var str = new ROSLIB.Message({
+            data : 'hello'
+            });
+
+                click_button.publish(str);
+                                                   
+                ;
+
+            
+        }
+   
+        </script>
+
+    </head>
+
+    <body onload="init()">
+        
+    
+    <h2>2D MAP!!!</h2>
+    <div id="map2d"> </div>
+    
+    
+    
+    <p>Service status:<span id="click_button"></span></p>
+
+    <p> Communication status with Websocket: <span id="status"></span> </p>
+    <p> X-coordinate : <span id="x"></span>   (m)</p>
+    <p> Y-coordinate : <span id="y"></span>   (m)</p>
+    <p> Orientation  : <span id="theta"></span>(deg)</p>
+    <p> Translational speed : <span id="trans_speed"></span>   (m/s)</p>
+    <p> Rotational    speed : <span id="angular_speed"></span> (rad/s)</p>
+   
+    <!-- create button (table's name)     -->
+    <button > Table 1</button>
+ 
+
+
+
+    
+   
+    
+ 
+    </body>
+</html>

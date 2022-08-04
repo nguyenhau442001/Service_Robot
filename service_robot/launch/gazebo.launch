@@ -8,8 +8,8 @@
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
 
-  <arg name="x" default="3"/>
-  <arg name="y" default="3"/>
+  <arg name="x" default="2"/>
+  <arg name="y" default="2"/>
   <arg name="z" default="0"/>
   
   <include file="$(find gazebo_ros)/launch/empty_world.launch">

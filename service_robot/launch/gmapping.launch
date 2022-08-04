@@ -19,10 +19,10 @@
     <!--Launch slam_gmapping node-->
     <node pkg="gmapping" name="slam_gmapping" type="slam_gmapping" output="screen">
       <param name="delta" value="0.05"/>
-      <param name="xmin" value="-20"/>
-      <param name="xmax" value="20"/>
-      <param name="ymin" value="-20"/>
-      <param name="ymax" value="20"/>
+      <param name="xmin" value="0"/>
+      <param name="xmax" value="0.5"/>
+      <param name="ymin" value="0"/>
+      <param name="ymax" value="0.5"/>
       <remap from="scan" to="mybot/laser/scan"/>
       <param name="base_frame" value="base_link" />
   
@@ -31,7 +31,8 @@
       <param name="temporalUpdate" value="-1.0"/>
       <param name="resampleThreshold" value="0.5"/>
       <param name="particles" value="80"/>
-  
+
+  	<param name="maxRange" value="20"/>
     </node>
   
-  </launch>
+  </launch>	
