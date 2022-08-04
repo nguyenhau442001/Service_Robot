@@ -81,3 +81,9 @@ Another scenario
 4. In rviz, click on 2D Pose Estimate and set initial pose estimate of the robot.
 
 5. To move to a goal, click on 2D Nav Goal to set your goal location and pose.
+
+#USER INTERFACE (WEB BROWSER)
+Purpose: To control robot via web browser (Using rosbridge_server package - this package helps frontend developer build a web interface to visualize or interact with ROS Server.  
+Requires components:
+1. roslib,ros2djs,ros3djs,rosbridge_server (use Websocket)
+2. Basic knowledge HTML,CSS,JS and ROS .
