@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function fun() {
+alert("Welcome to the javaTpoint.com");
+}
+</script>
+</head>
+<body>
+<h3> This is an example of using onclick attribute in HTML. </h3>
+<p> Click the following button to see the effect. </p>
+<button onclick = "fun()">Click me</button>
+</body>
+</html>

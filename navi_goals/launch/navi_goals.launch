@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+   <arg name="use_rviz" default="true"/>
+  <node pkg="navi_goals" type="navi_goals" name="navi_goals_node" output="screen" />  
+</launch>
