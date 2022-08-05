@@ -32,7 +32,7 @@
     <param name="update_min_a" value="1.0"/>
 
     <param name="min_particles"             value="500"/>
-    <param name="max_particles"             value="3000"/>
+    <param name="max_particles"             value="10000"/>
     <param name="kld_err"                   value="0.02"/>
     <param name="resample_interval"         value="1"/>
     <param name="transform_tolerance"       value="0.5"/>

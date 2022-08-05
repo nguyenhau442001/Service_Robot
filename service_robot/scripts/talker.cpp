@@ -52,7 +52,7 @@ int main(int argc, char **argv)
    * A count of how many messages we have sent. This is used to create
    * a unique string for each message.
    */
-  int count = 0;
+  
   while (ros::ok())
   {
     /**
@@ -72,12 +72,12 @@ int main(int argc, char **argv)
      * given as a template parameter to the advertise<>() call, as was done
      * in the constructor above.
      */
-    // chatter_pub.publish(msg);
+    //  chatter_pub.publish(msg);
 
     ros::spinOnce();
 
     loop_rate.sleep();
-    ;
+    
   }
 
 
