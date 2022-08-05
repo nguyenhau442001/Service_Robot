@@ -87,3 +87,8 @@ Purpose: To control robot via web browser (Using rosbridge_server package - this
 Requires components:
 1. roslib,ros2djs,ros3djs,rosbridge_server (use Websocket)
 2. Basic knowledge HTML,CSS,JS and ROS .
+
+The key idea 
+![image](https://user-images.githubusercontent.com/105471622/183107579-b43582d8-ba24-44d4-a6af-190ad090ca76.png)
+At left hand, we using client library such as roslib, ros3djs to communicate with WebSocket, WebSocket convert message to ROS.
+Objective: Click on button in web browser, at the point publish a message. File .py compare condition, if correct the string , we execute command line via subprocess.
