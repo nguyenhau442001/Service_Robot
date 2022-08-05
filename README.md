@@ -1,11 +1,13 @@
 # SERVICE ROBOT
 I have consulted the documentation as below:
 
-1.https://github.com/devanshdhrafani/diff_drive_bot?fbclid=IwAR13gKv9AT9qRRjoVsUqTYrhSJN_SqjqlOUT3N7VGfB8ZDaehv2m5LRvvdI
+    1.https://github.com/devanshdhrafani/diff_drive_bot?fbclid=IwAR13gKv9AT9qRRjoVsUqTYrhSJN_SqjqlOUT3N7VGfB8ZDaehv2m5LRvvdI
 
-2.https://devanshdhrafani.github.io/blog/2020/11/01/diffdrive.html?fbclid=IwAR2rnmI8jEJEn0mfh6qbEmEooA_AI3zIyLfcTQ-vht6G5wXuQnkvXc8n0ow
+    2.https://devanshdhrafani.github.io/blog/2020/11/01/diffdrive.html?fbclid=IwAR2rnmI8jEJEn0mfh6qbEmEooA_AI3zIyLfcTQ-vht6G5wXuQnkvXc8n0ow
 
-Link youtube: https://www.youtube.com/watch?v=k0roG6xbp_c&t=11s
+Link youtube: 
+1.  https://www.youtube.com/watch?v=k0roG6xbp_c&t=11s.
+
 
 This ROS package implements SLAM on a 2 wheeled differential drive robot to map an unknown environment. A keyboard is used to teleoperate the robot in Gazebo. The map generated is then used for autonomous navigation using the ROS Navigation stack.
 # Installation
@@ -19,6 +21,7 @@ This ROS package implements SLAM on a 2 wheeled differential drive robot to map 
 2. Install Required dependencies:
 
     $ sudo apt-get install ros-noetic-dwa-local-planner
+If you missing any dependencies packages, please install them before go move on to the next step.
 
 # URDF 
 ![image](https://user-images.githubusercontent.com/105471622/174599261-1599c94a-85e2-402d-a6ea-d82d54f4b950.png)
@@ -92,3 +95,10 @@ The key idea
 ![image](https://user-images.githubusercontent.com/105471622/183107579-b43582d8-ba24-44d4-a6af-190ad090ca76.png)
 At left hand, we using client library such as roslib, ros3djs to communicate with WebSocket, WebSocket convert message to ROS.
 Objective: Click on button in web browser, at the point publish a message. File .py compare condition, if correct the string , we execute command line via subprocess.
+
+Subprocess (python)
+The subprocess use purpose when running the launch files dont need typing directly from the terminal.
+![image](https://user-images.githubusercontent.com/105471622/183111655-8527b2ea-dedb-4c5f-a0c7-6503ddfa9f41.png)
+Right here, I have 5 foldersn corresponding to 5 files running to give waypoint for /move_base_simple/goals. by the way click button on the website.
+After clicked button, ROS object (Javasript Object) publish a string message. file call_navi_goal_from_web.py subcribe this message and compare with list of string"Table 1 2 3 4 5", if anything match , it will execute subprocess.Popen. Immediately, roslaunch navi_goals navi_goals.launch was being execute in shell.
+
