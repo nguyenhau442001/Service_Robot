@@ -98,8 +98,10 @@ The key idea
 At left hand, we using client library such as roslib, ros3djs to communicate with WebSocket, WebSocket convert message to ROS.
 Objective: Click on button in web browser, at the point publish a message. File .py compare condition, if correct the string , we execute command line via subprocess.
 
+
 Subprocess (python)
 The subprocess use purpose when running the launch files dont need typing directly from the terminal.
+Reference: https://docs.python.org/3/library/subprocess.html
 
 ![image](https://user-images.githubusercontent.com/105471622/183111655-8527b2ea-dedb-4c5f-a0c7-6503ddfa9f41.png)
 Right here, I have 5 folders corresponding to 5 files running to give waypoint for /move_base_simple/goals. by the way click button on the website.
@@ -109,6 +111,7 @@ After clicked button, ROS object (Javasript Object) publish a string message. fi
 
 Waypoint file
 The format of waypoint file as below:
+
 ![image](https://user-images.githubusercontent.com/105471622/183113920-ec51664e-7f8a-4c14-bd8a-8029d0278547.png)
 
 We can add any point we want.Right here, I choose home position at (2,2) meters. Assumption I have 5 tables, so navi_goal contains of position of table 1, navi_goals2 contains of postion of table 2. Similar, navi_goals3 navi_goals4 navi_goals5 contain the rest of postion's table.
