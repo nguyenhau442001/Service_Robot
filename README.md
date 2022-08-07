@@ -114,4 +114,4 @@ The format of waypoint file as below:
 
 ![image](https://user-images.githubusercontent.com/105471622/183113920-ec51664e-7f8a-4c14-bd8a-8029d0278547.png)
 
-We can add any point we want.Right here, I choose home position at (2,2) meters. Assumption I have 5 tables, so navi_goal contains of position of table 1, navi_goals2 contains of postion of table 2. Similar, navi_goals3 navi_goals4 navi_goals5 contain the rest of postion's table.
+We can add any point we want. Right here, I choose the home position at (2,2) meters. The assumption is I have 5 tables, so navi_goal contains the position of table 1, and navi_goals2 contains of the position of table 2. Similar, navi_goals3 navi_goals4 navi_goals5 contains the rest of the position's table.
