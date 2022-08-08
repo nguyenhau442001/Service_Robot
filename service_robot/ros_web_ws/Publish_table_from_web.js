@@ -6029,7 +6029,8 @@
 
     });
     function clickTable1(){
-    click_button1.publish(str1)};
+    click_button1.publish(str1),
+    document.getElementById("click_button").innerHTML=" Moving Table 1"};
 
     //Publish message (Table2)
     var click_button2 = new ROSLIB.Topic(
@@ -6046,7 +6047,8 @@
 
     });
     function clickTable2(){
-    click_button2.publish(str2);}
+    click_button2.publish(str2),
+    document.getElementById("click_button").innerHTML=" Moving Table 2"};
 
     //Publish message (Table1)
     var click_button3 = new ROSLIB.Topic(
@@ -6063,7 +6065,8 @@
 
     });
     function clickTable3(){
-    click_button3.publish(str3)};
+    click_button3.publish(str3),
+    document.getElementById("click_button").innerHTML=" Moving Table 3"};
 
     //Publish message (Table4)
     var click_button4 = new ROSLIB.Topic(
@@ -6080,7 +6083,8 @@
 
     });
     function clickTable4(){
-    click_button4.publish(str4);}
+    click_button4.publish(str4),
+    document.getElementById("click_button").innerHTML=" Moving Table 4"};
 
     //Publish message (Table4)
     var click_button5 = new ROSLIB.Topic(
@@ -6097,4 +6101,5 @@
 
     });
     function clickTable5(){
-    click_button5.publish(str5);}
+    click_button5.publish(str5),
+    document.getElementById("click_button").innerHTML=" Moving Table 5"};

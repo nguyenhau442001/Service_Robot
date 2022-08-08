@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #Modified code from turtlebot3_teleop_key 
 
@@ -10,8 +10,8 @@ if os.name == 'nt':
 else:
   import tty, termios
 
-MAX_LIN_VEL = 2.0
-MAX_ANG_VEL = 5.0
+MAX_LIN_VEL = 200.0
+MAX_ANG_VEL = 50.0
 
 LIN_VEL_STEP_SIZE = 0.2
 ANG_VEL_STEP_SIZE = 0.2
