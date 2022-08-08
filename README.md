@@ -1,13 +1,15 @@
 # SERVICE ROBOT
-I have consulted the documentation as below:
+I have consulted the documentation below:
 
-1.https://github.com/devanshdhrafani/diff_drive_bot?fbclid=IwAR13gKv9AT9qRRjoVsUqTYrhSJN_SqjqlOUT3N7VGfB8ZDaehv2m5LRvvdI
+    1.https://github.com/devanshdhrafani/diff_drive_bot?fbclid=IwAR13gKv9AT9qRRjoVsUqTYrhSJN_SqjqlOUT3N7VGfB8ZDaehv2m5LRvvdI
 
-2.https://devanshdhrafani.github.io/blog/2020/11/01/diffdrive.html?fbclid=IwAR2rnmI8jEJEn0mfh6qbEmEooA_AI3zIyLfcTQ-vht6G5wXuQnkvXc8n0ow
+    2.https://devanshdhrafani.github.io/blog/2020/11/01/diffdrive.html?fbclid=IwAR2rnmI8jEJEn0mfh6qbEmEooA_AI3zIyLfcTQ-vht6G5wXuQnkvXc8n0ow
 
-Link youtube: https://www.youtube.com/watch?v=k0roG6xbp_c&t=11s
+Link youtube: 
+1.  https://www.youtube.com/watch?v=k0roG6xbp_c&t=11s.
 
-This ROS package implements SLAM on a 2 wheeled differential drive robot to map an unknown environment. A keyboard is used to teleoperate the robot in Gazebo. The map generated is then used for autonomous navigation using the ROS Navigation stack.
+
+This ROS package implements SLAM on a 2-wheeled differential drive robot to map an unknown environment. A keyboard is used to teleoperate the robot in Gazebo. The map generated is then used for autonomous navigation using the ROS Navigation stack.
 # Installation
 1. Build package from source: navigate to the source folder of your catkin workspace and build this package using:
 
@@ -18,18 +20,20 @@ This ROS package implements SLAM on a 2 wheeled differential drive robot to map 
     $ catkin_make
 2. Install Required dependencies:
 
-    $ sudo apt-get install ros-noetic-dwa-local-planner
+    $ sudo apt-get install ros-noetic-dwa-local-planner.
+    
+If you missing any dependencies packages, please install them before go move on to the next step.
 
 # URDF 
 ![image](https://user-images.githubusercontent.com/105471622/174599261-1599c94a-85e2-402d-a6ea-d82d54f4b950.png)
 
-As we can see, this is my URDF. I exported from Solidworks. Basically, my URDF have 4 links such as base_link,left and right wheel link, and finally lidar link.
+As we can see, this is my URDF. I exported from Solidworks. My URDF have 4 links such as base_link, left and right wheel link, and finally lidar link.
 
 # GAZEBO 
 
 ![image](https://user-images.githubusercontent.com/105471622/174600486-9ba8c109-3487-466f-9884-f65708d84ead.png)
 
-This is my robot when its standing in simulation environment GAZEBO.
+This is my robot when it's spawning in a simulation environment GAZEBO
 # Simultaneous Localization And Mapping (SLAM)
 ![image](https://user-images.githubusercontent.com/105471622/174599138-efb09998-0637-49de-9da0-44b7cafb0878.png)
 
@@ -83,7 +87,31 @@ Another scenario
 5. To move to a goal, click on 2D Nav Goal to set your goal location and pose.
 
 # USER INTERFACE (WEB BROWSER)
-Purpose: To control robot via web browser (Using rosbridge_server package - this package helps frontend developer build a web interface to visualize or interact with ROS Server.  
+Purpose: To control the robot via the web browser (Using rosbridge_server package - this package helps frontend developers build a web interface to visualize or interact with ROS Server.  
 Requires components:
 1. roslib,ros2djs,ros3djs,rosbridge_server (use Websocket)
 2. Basic knowledge HTML,CSS,JS and ROS .
+
+The key idea 
+![image](https://user-images.githubusercontent.com/105471622/183107579-b43582d8-ba24-44d4-a6af-190ad090ca76.png)
+
+On the left hand, we use client library such as roslib, ros2djs and ros3djs to communicate with WebSocket, WebSocket convert message to ROS that Robot can understandable.
+Objective: Click on the button in a web browser, and at that point publish a message. File python will compare conditions if correct, we execute command line like "roslaunch navi_goals navi_goals" via subprocess.
+
+
+Subprocess (python)
+The subprocess use purpose when running the launch files dont need typing directly from the terminal.
+Reference: https://docs.python.org/3/library/subprocess.html
+
+![image](https://user-images.githubusercontent.com/105471622/183111655-8527b2ea-dedb-4c5f-a0c7-6503ddfa9f41.png)
+
+First of all, we create a Javascript object using "roslib". This object will publish a message type String when we click any button in a web browser.  For instance,  we have 5 buttons respective to the 5 tables we want to move to, when we hit button "Table 1", immediately Javascript object will publish a message "Table 1" underlying topic "Moving_to_table". And we have "call_navi_goal_from_web.py" file, this file will take the message that Javascript object sending. And it will compare with the conditions.  If anything matches, it will execute the subprocess.popen. Immediately, "roslaunch navi_goals navi_goals.launch" was being executed in a terminal.
+
+![image](https://user-images.githubusercontent.com/105471622/183113599-e750508e-1a40-4d89-871d-376df5548dc0.png)
+
+Waypoint file
+The format of waypoint file as below:
+
+![image](https://user-images.githubusercontent.com/105471622/183113920-ec51664e-7f8a-4c14-bd8a-8029d0278547.png)
+
+We can add any point we want. Right here, I choose the home position at (2,2) meters. The assumption is I have 5 tables, so navi_goal contains the position of table 1, and navi_goals2 contains of the position of table 2. Similar, navi_goals3 navi_goals4 navi_goals5 contains the rest of the position's table.
