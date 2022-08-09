@@ -115,3 +115,11 @@ The format of waypoint file as below:
 ![image](https://user-images.githubusercontent.com/105471622/183113920-ec51664e-7f8a-4c14-bd8a-8029d0278547.png)
 
 We can add any point we want. Right here, I choose the home position at (2,2) meters. The assumption is I have 5 tables, so navi_goal contains the position of table 1, and navi_goals2 contains of the position of table 2. Similar, navi_goals3 navi_goals4 navi_goals5 contains the rest of the position's table.
+
+The order of execution command line:
+1. roslaunch service_robot amcl_move_base_gazebo.launch
+2. roslaunch rosbridge_server rosbridge_websocket.launch
+3. rosrun service_robot call_navi_goal_from_web.py
+4. Open web-gui.html in your browser, sometimes need to reload page.
+5. After that, we already click any button to send the goal to /move_base. 
+6. Execute instruction: rostopic echo /move_base_simple/goal to check to publish waypoint to the topic yet.
