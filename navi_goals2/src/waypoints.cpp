@@ -111,8 +111,14 @@ bool buildWaypointsFromFile(std::vector<geometry_msgs::PointStamped> &waypoints)
 /*
    Build Navigation Goal Message and send to MoveBase
 */
-void run(std::string ref_frame, move_base_msgs::MoveBaseGoal &goal, const std::vector<geometry_msgs::PointStamped> &waypoints, int index)
+void run(std::string ref_frame, move_base_msgs::MoveBaseGoal &goal, const std::vector<geometry_msgs::PointStamped> &waypoints, int index,geometry_msgs::PoseStamped &msg)
 {
+  
+      ros::NodeHandle n;
+    ros::Publisher goal_pub = n.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1);
+    
+    ros::Rate loop_rate(1);
+    
   // tell the action client that we want to spin a thread by default
   MoveBaseClient action_client( "move_base", true );
 
@@ -136,9 +142,26 @@ void run(std::string ref_frame, move_base_msgs::MoveBaseGoal &goal, const std::v
       goal.target_pose.pose.orientation.y = q.y();
       goal.target_pose.pose.orientation.z = q.z();
       goal.target_pose.pose.orientation.w = q.w();
-
+		
+		// Publish goal to /move_base_simple/goal
+	  //Header
+	  msg.header.seq=0;
+	  msg.header.stamp=ros::Time::now();
+	  msg.header.frame_id=ref_frame;
+	  //Pose (point)
+	  msg.pose.position.x= waypoints[index].point.x;
+	  msg.pose.position.y= waypoints[index].point.y;
+	  msg.pose.position.z=0.0;
+	  //Pose (orientation)
+	  msg.pose.orientation.x=q.x();
+	  msg.pose.orientation.y=q.y();
+	  msg.pose.orientation.z=q.z();
+	  msg.pose.orientation.w=q.w();
+	  
+	  
       // send navigation goal to MoveBase
       ROS_INFO("Sending goal: (%.2f, %.2f, %.2f)", goal.target_pose.pose.position.x, goal.target_pose.pose.position.y, goal.target_pose.pose.orientation.z );
+      goal_pub.publish(msg);
       action_client.sendGoal( goal );
       action_client.waitForResult(ros::Duration(120.0)); // waits 120 seconds to receive a result
       if (action_client.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
@@ -153,6 +176,8 @@ void run(std::string ref_frame, move_base_msgs::MoveBaseGoal &goal, const std::v
 */
 int main( int argc, char **argv )
 {
+
+    
   ros::init( argc, argv, "waypoint_nav_node" ); // create node
   
   
@@ -166,6 +191,7 @@ int main( int argc, char **argv )
   std::vector<geometry_msgs::PointStamped> waypoints;
   // declare 'goal' to use it to keep each waypoints coordinates (double)
   move_base_msgs::MoveBaseGoal goal;
+  geometry_msgs::PoseStamped msg;
   uint8_t task = 0;
   // parse waypoints from YAML file
   
@@ -187,7 +213,7 @@ while(ros::ok())
       // funtion call to run waypoint navigation to waypoint 0
     
      
-      run(ref_frame, goal, waypoints, 0);
+      run(ref_frame, goal, waypoints, 0,msg);
       ROS_INFO_ONCE("Loading of goods ... (waiting 5 seconds)");
       ros::Duration(5).sleep(); 
       task = 1;
@@ -199,7 +225,7 @@ while(ros::ok())
     case 1:
       ROS_INFO_ONCE("Moving to drop off zone");
       // funtion call to run waypoint navigation to waypoint 1
-      run(ref_frame, goal, waypoints, 1);
+      run(ref_frame, goal, waypoints, 1,msg);
       task = 2;
       break;
     
