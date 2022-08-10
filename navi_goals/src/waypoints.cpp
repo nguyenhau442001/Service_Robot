@@ -160,10 +160,10 @@ void run(std::string ref_frame, move_base_msgs::MoveBaseGoal &goal, const std::v
 	  
 	
       // send navigation goal to MoveBase
-      ROS_INFO("Sending goal: (%.2f, %.2f, %.2f)", goal.target_pose.pose.position.x, goal.target_pose.pose.position.y, goal.target_pose.pose.orientation.z );
+      ROS_INFO("Sending goal: (%.2f, %.2f, %.2f)", goal.target_pose.pose.position.x, goal.target_pose.pose.position.y, waypoints[index].point.z );
       goal_pub.publish(msg);
       action_client.sendGoal( goal );
-      action_client.waitForResult(ros::Duration(120.0)); // waits 120 seconds to receive a result
+      action_client.waitForResult(ros::Duration(600.0)); // waits 120 seconds to receive a result
       if (action_client.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
         ROS_INFO("The base reached its waypoint");
       else

@@ -74,10 +74,19 @@
                 poseTopic.subscribe(function (pose) {
                 document.getElementById("x").innerHTML = (pose.pose.pose.position.x).toFixed(2);
                 document.getElementById("y").innerHTML = (pose.pose.pose.position.y).toFixed(2);
-                document.getElementById("theta").innerHTML = ((180/3.14)*(pose.pose.pose.orientation.z)).toFixed(2);
+                // Convert theta from quaternion
+                var robot_w=pose.pose.pose.orientation.w;
+             
+                var robot_z=pose.pose.pose.orientation.z;
+                var robot_theta=Math.atan2(robot_w*robot_z,0.5-robot_z*robot_z);
+                robot_theta=robot_theta*180/(Math.PI)
+                
+                goalMarker.rotation = robot_theta;
+                document.getElementById("theta").innerHTML = robot_theta.toFixed(2);
+
                 robotMarker.x = pose.pose.pose.position.x;
                 robotMarker.y = -(pose.pose.pose.position.y);
-                robotMarker.rotation=-((180/3.14)*(pose.pose.pose.orientation.z));
+                robotMarker.rotation=-robot_theta;
                
                 })
                 
@@ -97,8 +106,8 @@
             // 2D MAP
             var viewer2d = new ROS2D.Viewer({
             divID : 'map2d',
-            width : 600,
-            height : 400
+            width : 300,
+            height : 300
             });
 
             var gridClient_2d = new ROS2D.OccupancyGridClient({
@@ -132,6 +141,7 @@
                 messageType: 'geometry_msgs/PoseStamped'
             }
             ); 
+
             goalTopic.subscribe(function (goal) {
                 
             document.getElementById("x_goal").innerHTML=(goal.pose.position.x).toFixed(2);
@@ -140,9 +150,14 @@
 
             goalMarker.x = goal.pose.position.x;
             goalMarker.y = -goal.pose.position.y;
-  
-            var theta=-((180/3.14)*(goal.pose.orientation.z)+45);
-            goalMarker.rotation = theta;
+
+            // Convert theta from quaternion
+            var w=goal.pose.orientation.w;
+            var z=goal.pose.orientation.z;
+            var theta=Math.atan2(w*z,0.5-z*z);
+            theta=theta*180/(Math.PI)
+            
+            goalMarker.rotation = -theta;
             document.getElementById("orientation_goal").innerHTML=theta.toFixed(2);
     
             }
@@ -158,26 +173,27 @@
             messageType: 'nav_msgs/Path',
             //throttle_rate: 100
             });
-            var odomtf = {x: 0, y: 0, rotation: 0};
-            tfClient.subscribe('odom', function(tf) {
-                odomtf.x = pose.pose.pose.position.x;
-                odomtf.y = -pose.pose.pose.position.x;
-                // odomtf.rotation = stage.rosQuaternionToGlobalTheta(tf.rotation);
-            });
+
             var pathShape = new ROS2D.PathShape({
                 strokeColor: 'green'
             });
-            
+            // var odomtf = {x: 0, y: 0, rotation: 0};
+            // tfClient.subscribe('odom', function(tf) {
+            //     odomtf.x = tf.translation.x;
+            //     odomtf.y = tf.translation.y;
+            //     odomtf.rotation = gridClient_2d.rootObject.rosQuaternionToGlobalTheta(tf.rotation);
+            // });
+
             gridClient_2d.rootObject.addChild(pathShape);
             pathListener.subscribe(function(path) {
-                //console.log("Path!");
-                pathShape.setPath(path);
-                // pathShape.rotation = odomtf.rotation;
-                pathShape.x = odomtf.x;
-                pathShape.y = -odomtf.y;
-                pathShape.scaleX = 1.0 / stage.scaleX;
-                pathShape.scaleY = 1.0 / stage.scaleY;
-            });
+            // console.log("Path!");
+            pathShape.setPath(path);
+            pathShape.rotation = 45;
+            pathShape.x = 3;
+            pathShape.y = 5;
+            pathShape.scaleX = 1.0 /  gridClient_2d.rootObject.scaleX;
+            pathShape.scaleY = 1.0 /  gridClient_2d.rootObject.scaleY;
+  });
   
         }
        
@@ -194,25 +210,37 @@
     <p> Communication status with Websocket: <span id="status"></span> </p>
 
     <p>Service status:<span id="click_button"></span></p>
-    <h2> Robot's pose </h2>
-    <p> X-coordinate : <span id="x"></span>   (m)</p>
-    <p> Y-coordinate : <span id="y"></span>   (m)</p>
-    <p> Orientation  : <span id="theta"></span>(deg)</p>
-    <p> Translational speed : <span id="trans_speed"></span>   (m/s)</p>
-    <p> Rotational    speed : <span id="angular_speed"></span> (rad/s)</p>
+
+    <div style="width: 100%;">
+        <div style="width: 50%; height: 100px; float: left; "> 
+            <h2> Robot's pose </h2>
+            <p> X-coordinate : <span id="x"></span>   (m)</p>
+            <p> Y-coordinate : <span id="y"></span>   (m)</p>
+            <p> Orientation  : <span id="theta"></span>(deg)</p>
+            <p> Translational speed : <span id="trans_speed"></span>   (m/s)</p>
+            <p> Rotational    speed : <span id="angular_speed"></span> (rad/s)</p>
+        </div>
+
+        <div style="margin-left: 50%; height: 100px; "> 
+            <h2>Goal's coordinates</h2>
+            <p>X: <span id="x_goal"></span></p>
+            <p>Y: <span id="y_goal"></span></p>
+            <p>Orientation: <span id="orientation_goal"></span></p>
+                    <!-- create button (table's name)     -->
+            <button  onclick="clickTable1()"> Table 1</button>
+            <button  onclick="clickTable2()"> Table 2</button>
+            <button  onclick="clickTable3()"> Table 3</button>
+            <button  onclick="clickTable4()"> Table 4</button>
+            <button  onclick="clickTable5()"> Table 5</button>
+        </div>
+    </div>
+
+
+
     
-    <h2>Goal's coordinates</h2>
-    <p>X: <span id="x_goal"></span></p>
-    <p>Y: <span id="y_goal"></span></p>
-    <p>Orientation: <span id="orientation_goal"></span></p>
 
 
-    <!-- create button (table's name)     -->
-    <button  onclick="clickTable1()"> Table 1</button>
-    <button  onclick="clickTable2()"> Table 2</button>
-    <button  onclick="clickTable3()"> Table 3</button>
-    <button  onclick="clickTable4()"> Table 4</button>
-    <button  onclick="clickTable5()"> Table 5</button>
+  
     
   
 
