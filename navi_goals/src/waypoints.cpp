@@ -163,7 +163,9 @@ void run(std::string ref_frame, move_base_msgs::MoveBaseGoal &goal, const std::v
       ROS_INFO("Sending goal: (%.2f, %.2f, %.2f)", goal.target_pose.pose.position.x, goal.target_pose.pose.position.y, waypoints[index].point.z );
       goal_pub.publish(msg);
       action_client.sendGoal( goal );
-      action_client.waitForResult(ros::Duration(600.0)); // waits 120 seconds to receive a result
+      action_client.waitForResult(ros::Duration(120.0)); // waits 120 seconds to receive a result
+      ros::Duration(45).sleep();  
+
       if (action_client.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
         ROS_INFO("The base reached its waypoint");
       else
@@ -179,9 +181,12 @@ int main( int argc, char **argv )
  
 	 
    
-    
+  ros::init(argc, argv, "notify_done"); 
   ros::init( argc, argv, "waypoint_nav_node" ); // create node
   
+  
+  ros::NodeHandle notify;
+  ros::Publisher notify_done = notify.advertise<std_msgs::String>("Notify_done", 1);
   
   
   ros::NodeHandle ros_nh; // Start the roscpp node by creating a ros node handle
@@ -194,6 +199,7 @@ int main( int argc, char **argv )
   // declare 'goal' to use it to keep each waypoints coordinates (double)
   move_base_msgs::MoveBaseGoal goal;
   geometry_msgs::PoseStamped msg;
+  std_msgs::String notification;
   uint8_t task = 0;
   // parse waypoints from YAML file
   
@@ -219,7 +225,7 @@ while(ros::ok())
        	  
 
       ROS_INFO_ONCE("Loading of goods ... (waiting 5 seconds)");
-      ros::Duration(5).sleep(); 
+      ros::Duration(20).sleep(); 
       task = 1;
 	
 
@@ -235,6 +241,10 @@ while(ros::ok())
     
     case 2:
       ROS_INFO_ONCE("Done!");
+      std::stringstream ss;
+	  ss << "Done";
+      notification.data = ss.str();
+      notify_done.publish(notification);
       break;
     }
 }

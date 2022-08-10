@@ -166,35 +166,44 @@
             gridClient_2d.rootObject.addChild(robotMarker);
             gridClient_2d.rootObject.addChild(goalMarker)
             
+
             // Add global path into 2D map
             var pathListener = new ROSLIB.Topic({
-            ros: ros,
-            name: '/move_base/DWAPlannerROS/global_plan',
-            messageType: 'nav_msgs/Path',
-            //throttle_rate: 100
+                ros: ros,
+                name: '/move_base/NavfnROS/plan',
+                messageType: 'nav_msgs/Path',
+                // throttle_rate: NAV.THROTTLE_RATE
+            });
+            
+            var notify_done = new ROSLIB.Topic({
+                ros: ros,
+                name: '/notify_done',
+                messageType: 'std_msgs/String',
+                // throttle_rate: NAV.THROTTLE_RATE
             });
 
-            var pathShape = new ROS2D.PathShape({
-                strokeColor: 'green'
-            });
-            // var odomtf = {x: 0, y: 0, rotation: 0};
-            // tfClient.subscribe('odom', function(tf) {
-            //     odomtf.x = tf.translation.x;
-            //     odomtf.y = tf.translation.y;
-            //     odomtf.rotation = gridClient_2d.rootObject.rosQuaternionToGlobalTheta(tf.rotation);
-            // });
+            var updatePath = function(plan){
+            // if(!planPath){
+                // notify_done.subscribe(function(String)
+                // {
+                // if(!String=="Done")
+                // {
+                var    planPath =  new ROS2D.PathShape({path:plan,strokeSize:0.03,strokeColor:createjs.Graphics.getRGB(0,255, 0, 0.7)});
+                gridClient_2d.rootObject.addChild(planPath);
+                // }
+                // else{gridClient_2d.rootObject.removeChild(planPath)};
+            // })
+            // }else{
+            //     gridClient_2d.rootObject.removeChild(gridClient_2d.planPath);
+            //     gridClient_2d.planPath.setPath(plan);
+            //     gridClient_2d.rootObject.addChild(gridClient_2d.planPath);
+            // }
+        }
+            pathListener.subscribe(function(plan) {
+            // if(plan.poses && plan.poses.length>5){
+            updatePath(plan);
+            })
 
-            gridClient_2d.rootObject.addChild(pathShape);
-            pathListener.subscribe(function(path) {
-            // console.log("Path!");
-            pathShape.setPath(path);
-            pathShape.rotation = 45;
-            pathShape.x = 3;
-            pathShape.y = 5;
-            pathShape.scaleX = 1.0 /  gridClient_2d.rootObject.scaleX;
-            pathShape.scaleY = 1.0 /  gridClient_2d.rootObject.scaleY;
-  });
-  
         }
        
         </script>
