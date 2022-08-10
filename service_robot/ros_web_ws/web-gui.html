@@ -172,6 +172,7 @@
                 ros: ros,
                 name: '/move_base/NavfnROS/plan',
                 messageType: 'nav_msgs/Path',
+                pulse:true
                 // throttle_rate: NAV.THROTTLE_RATE
             });
             
@@ -181,28 +182,24 @@
                 messageType: 'std_msgs/String',
                 // throttle_rate: NAV.THROTTLE_RATE
             });
-
-            var updatePath = function(plan){
-            // if(!planPath){
-                // notify_done.subscribe(function(String)
-                // {
-                // if(!String=="Done")
-                // {
-                var    planPath =  new ROS2D.PathShape({path:plan,strokeSize:0.03,strokeColor:createjs.Graphics.getRGB(0,255, 0, 0.7)});
-                gridClient_2d.rootObject.addChild(planPath);
-                // }
-                // else{gridClient_2d.rootObject.removeChild(planPath)};
-            // })
-            // }else{
-            //     gridClient_2d.rootObject.removeChild(gridClient_2d.planPath);
-            //     gridClient_2d.planPath.setPath(plan);
-            //     gridClient_2d.rootObject.addChild(gridClient_2d.planPath);
-            // }
-        }
+            
+ 
+            var updatePath = function(plan)
+            {
+               
+            var planPath =  new ROS2D.PathShape({path:plan,strokeSize:0.1,strokeColor:createjs.Graphics.getRGB(94, 82, 125, 0.7)})
+              
+            gridClient_2d.rootObject.addChild(planPath);
+            console.log(planPath);
+          
+        
+    
+            }
             pathListener.subscribe(function(plan) {
-            // if(plan.poses && plan.poses.length>5){
+            
+            if(plan.poses && plan.poses.length>200){
             updatePath(plan);
-            })
+            }})
 
         }
        
