@@ -183,30 +183,45 @@
                 // throttle_rate: NAV.THROTTLE_RATE
             });
             var planPath=null;
- 
+            function sleep(milliseconds) {
+            const date = Date.now();
+            let currentDate = null;
+            do {
+                currentDate = Date.now();
+            } while (currentDate - date < milliseconds);
+            }
+
+            function clear_path(planPath)
+            {
+                if(planPath!=null)
+                {
+            
+                // delay right here
+                gridClient_2d.rootObject.removeChild(planPath);
+                planPath=null;
+                console.log(planPath);
+                console.log("da doi du 5s");
+                }
+            }
+
             var updatePath = function(plan)
             {
             
       
-            if(planPath==null) 
-            {  
-            planPath =  new ROS2D.PathShape({path:plan,strokeSize:0.1,strokeColor:createjs.Graphics.getRGB(94, 82, 125, 0.7)})
-              
-            gridClient_2d.rootObject.addChild(planPath);
-            console.log(planPath);
-           
-            }
+                if(planPath==null) 
+                {  
+                planPath =  new ROS2D.PathShape({path:plan,strokeSize:0.1,strokeColor:createjs.Graphics.getRGB(94, 82, 125, 0.7)})
+                
+                gridClient_2d.rootObject.addChild(planPath);
+                console.log(planPath);
+            
+                }
 
-            // setTimeout();
-            
-            if(planPath!=null)
-            {
-            
-            // delay right here
-            gridClient_2d.rootObject.removeChild(planPath);
-            planPath=null;
-            console.log(planPath);
-            }
+
+
+                setTimeout(clear_path,5000);
+             
+
             // }
             
         
