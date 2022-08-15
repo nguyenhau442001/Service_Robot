@@ -128,7 +128,7 @@ The order of execution command line:
 
 
 # SPEECH RECOGNITION.
-Well, I wanna drive my robot to table and speak several sentences like " Enjoy your meal " . Therefore, I have using the package "audio_common".
+Well, I wanna drive my robot to table and speak several sentences. Therefore, I have using the package "audio_common".
 
        $ sudo apt-get install ros-noetic-audio-common
        $ sudo apt-get install libasound2
@@ -139,6 +139,7 @@ Well, I wanna drive my robot to table and speak several sentences like " Enjoy y
        $ catkin_make
        
 Droid speak p (R2 D2 robot - Starwar) : https://gitlab.com/easymov/droidspeak
+Make your robot speak like R2-D2
 
 ![image](https://user-images.githubusercontent.com/105471622/184613628-22c897bb-e3c3-42c0-96f3-05a208584b94.png)
 
