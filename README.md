@@ -136,4 +136,7 @@ Well, I wanna drive my robot to table and speak several sentences like " Enjoy y
        $ source /opt/ros/noetic/setup.bash
        $ source /home/hau/catkin_ws/devel/setup.bash 
        $ catkin_make
-    
+Droi speak: https://gitlab.com/easymov/droidspeak
+![image](https://user-images.githubusercontent.com/105471622/184613460-44eeb00a-44b8-42d8-8713-f784046e4ac4.png)
+
+
