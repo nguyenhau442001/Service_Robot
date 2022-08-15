@@ -129,6 +129,7 @@ The order of execution command line:
 
 # SPEECH RECOGNITION.
 Well, I wanna drive my robot to table and speak several sentences like " Enjoy your meal " . Therefore, I have using the package "audio_common".
+
        $ sudo apt-get install ros-noetic-audio-common
        $ sudo apt-get install libasound2
        $ cd ~/catkin_ws
@@ -136,7 +137,9 @@ Well, I wanna drive my robot to table and speak several sentences like " Enjoy y
        $ source /opt/ros/noetic/setup.bash
        $ source /home/hau/catkin_ws/devel/setup.bash 
        $ catkin_make
-Droi speak: https://gitlab.com/easymov/droidspeak
-![image](https://user-images.githubusercontent.com/105471622/184613460-44eeb00a-44b8-42d8-8713-f784046e4ac4.png)
+       
+Droid speak p (R2 D2 robot - Starwar) : https://gitlab.com/easymov/droidspeak
+
+![image](https://user-images.githubusercontent.com/105471622/184613628-22c897bb-e3c3-42c0-96f3-05a208584b94.png)
 
 
