@@ -125,3 +125,15 @@ The order of execution command line:
 4. Open web-gui.html in your browser, sometimes need to reload page.
 5. After that, we already click any button to send the goal to /move_base. 
 6. Execute instruction: rostopic echo /move_base_simple/goal to check to publish waypoint to the topic yet.
+
+
+# SPEECH RECOGNITION.
+Well, I wanna drive my robot to table and speak several sentences like " Enjoy your meal " . Therefore, I have using the package "audio_common".
+       $ sudo apt-get install ros-noetic-audio-common
+       $ sudo apt-get install libasound2
+       $ cd ~/catkin_ws
+       $ source devel/setup.bash
+       $ source /opt/ros/noetic/setup.bash
+       $ source /home/hau/catkin_ws/devel/setup.bash 
+       $ catkin_make
+    
