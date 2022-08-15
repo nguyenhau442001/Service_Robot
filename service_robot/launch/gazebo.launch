@@ -11,10 +11,11 @@
   <arg name="x" default="2"/>
   <arg name="y" default="2"/>
   <arg name="z" default="0"/>
-  
+
+ 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     
-    <arg name="world_name" value="$(find service_robot)/worlds/nw.world"/>
+    <arg name="world_name" value="$(find service_robot)/worlds/10x10.world"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
     <arg name="gui" value="$(arg gui)"/>

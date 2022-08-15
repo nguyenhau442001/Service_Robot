@@ -40,6 +40,7 @@
         /**
          * Setup all visualization elements when the page is loaded.
          */
+         var planPath=null;
         function init() {
             // Connect to ROS.   
             var ros= new ROSLIB.Ros();
@@ -86,7 +87,7 @@
 
                 robotMarker.x = pose.pose.pose.position.x;
                 robotMarker.y = -(pose.pose.pose.position.y);
-                robotMarker.rotation=-robot_theta;
+                robotMarker.rotation=robot_theta;
                
                 })
                 
@@ -157,7 +158,7 @@
             var theta=Math.atan2(w*z,0.5-z*z);
             theta=theta*180/(Math.PI)
             
-            goalMarker.rotation = -theta;
+            goalMarker.rotation = theta;
             document.getElementById("orientation_goal").innerHTML=theta.toFixed(2);
     
             }
@@ -182,24 +183,18 @@
                 messageType: 'std_msgs/String',
                 // throttle_rate: NAV.THROTTLE_RATE
             });
-            var planPath=null;
-            function sleep(milliseconds) {
-            const date = Date.now();
-            let currentDate = null;
-            do {
-                currentDate = Date.now();
-            } while (currentDate - date < milliseconds);
-            }
+            
 
-            function clear_path(planPath)
+      
+            function clear_path(plan)
             {
-                if(planPath!=null)
+                if(plan!=null)
                 {
             
                 // delay right here
-                gridClient_2d.rootObject.removeChild(planPath);
-                planPath=null;
-                console.log(planPath);
+                gridClient_2d.rootObject.removeChild(plan);
+                plan=null;
+                console.log(plan);
                 console.log("da doi du 5s");
                 }
             }
@@ -210,16 +205,23 @@
       
                 if(planPath==null) 
                 {  
-                planPath =  new ROS2D.PathShape({path:plan,strokeSize:0.1,strokeColor:createjs.Graphics.getRGB(94, 82, 125, 0.7)})
+                planPath =  new ROS2D.PathShape({path:plan,strokeSize:0.1,strokeColor:createjs.Graphics.getRGB(94, 82, 125, 0.7)});
                 
                 gridClient_2d.rootObject.addChild(planPath);
                 console.log(planPath);
             
                 }
+                console.log(planPath);
 
-
-
-                setTimeout(clear_path,5000);
+        
+                setTimeout(clear_path,5000,planPath);
+            }
+                pathListener.subscribe(function(plan) {
+            
+            
+            updatePath(plan);
+            })
+            }    
              
 
             // }
@@ -228,14 +230,10 @@
             
         
             
-        }
-            pathListener.subscribe(function(plan) {
+        
             
-            
-            updatePath(plan);
-            })
 
-        }
+        
        
         </script>
     </head>
