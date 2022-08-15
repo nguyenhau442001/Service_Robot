@@ -75,6 +75,7 @@
                 poseTopic.subscribe(function (pose) {
                 document.getElementById("x").innerHTML = (pose.pose.pose.position.x).toFixed(2);
                 document.getElementById("y").innerHTML = (pose.pose.pose.position.y).toFixed(2);
+
                 // Convert theta from quaternion
                 var robot_w=pose.pose.pose.orientation.w;
              
@@ -83,11 +84,11 @@
                 robot_theta=robot_theta*180/(Math.PI)
                 
                 goalMarker.rotation = robot_theta;
-                document.getElementById("theta").innerHTML = robot_theta.toFixed(2);
+                document.getElementById("theta").innerHTML = (-robot_theta).toFixed(2);
 
                 robotMarker.x = pose.pose.pose.position.x;
                 robotMarker.y = -(pose.pose.pose.position.y);
-                robotMarker.rotation=robot_theta;
+                robotMarker.rotation=(-robot_theta);
                
                 })
                 
@@ -142,7 +143,7 @@
                 messageType: 'geometry_msgs/PoseStamped'
             }
             ); 
-
+            
             goalTopic.subscribe(function (goal) {
                 
             document.getElementById("x_goal").innerHTML=(goal.pose.position.x).toFixed(2);
@@ -159,7 +160,7 @@
             theta=theta*180/(Math.PI)
             
             goalMarker.rotation = theta;
-            document.getElementById("orientation_goal").innerHTML=theta.toFixed(2);
+            document.getElementById("orientation_goal").innerHTML=(theta).toFixed(2);
     
             }
             )
@@ -181,23 +182,8 @@
                 ros: ros,
                 name: '/notify_done',
                 messageType: 'std_msgs/String',
-                // throttle_rate: NAV.THROTTLE_RATE
             });
-            
 
-      
-            function clear_path(plan)
-            {
-                if(plan!=null)
-                {
-            
-                // delay right here
-                gridClient_2d.rootObject.removeChild(plan);
-                plan=null;
-                console.log(plan);
-                console.log("da doi du 5s");
-                }
-            }
 
             var updatePath = function(plan)
             {
@@ -211,10 +197,18 @@
                 console.log(planPath);
             
                 }
+                
+                setTimeout(function(){  
+                if(planPath!=null)
+                {
+            
+                // delay right here
+                gridClient_2d.rootObject.removeChild(planPath);
+                planPath=null;
                 console.log(planPath);
-
-        
-                setTimeout(clear_path,5000,planPath);
+           
+                }},10);
+      
             }
                 pathListener.subscribe(function(plan) {
             
