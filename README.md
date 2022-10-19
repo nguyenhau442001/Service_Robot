@@ -120,9 +120,13 @@ We can completely edit the magnetic field with the formula below:
 Where h_hat: calibration magnetic matrix, h_m magnetic sensor magnetic matrix, b: offset matrix, M: hard and soft iron matrix system.
 
 The result after calibrated:
+
 ![image](https://user-images.githubusercontent.com/105471622/196747814-774c0011-895e-46ed-9a9d-c82106091522.png)
 
-# SERVICE ROBOT
+The yaw angle equal atan(my,mx)
+
+
+# SIMULATION SERVICE ROBOT
 I have consulted the documentation below:
 
     1.https://github.com/devanshdhrafani/diff_drive_bot?fbclid=IwAR13gKv9AT9qRRjoVsUqTYrhSJN_SqjqlOUT3N7VGfB8ZDaehv2m5LRvvdI
