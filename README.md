@@ -61,7 +61,8 @@ We do some projection velocity vector into flat plane, we obtain the velocity of
 We can rewrite motion as below matrix form:
 
 ![image](https://user-images.githubusercontent.com/105471622/196741958-2b4bbf91-5204-40cc-ba7b-d752b0125322.png)
-
+ 
+ 
 From the (3) and (8) equations, we extract:
 
 ![image](https://user-images.githubusercontent.com/105471622/196742093-a1ed9284-a8a0-402f-8e99-ec90b3971ee9.png)
