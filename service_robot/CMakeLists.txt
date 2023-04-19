@@ -28,3 +28,7 @@ catkin_install_python(PROGRAMS scripts/keyboard_teleop.py
 catkin_install_python(PROGRAMS scripts/call_navi_goal_from_web.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+catkin_install_python(PROGRAMS scripts/converted_odom.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
