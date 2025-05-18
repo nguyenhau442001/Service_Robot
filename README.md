@@ -1,8 +1,7 @@
 # PART I. OVERVIEW ESSENTIAL PART COMMUNICATE
 1.Introduction
 
-One thing you need to know is that ROS supports plenty of programming languages, but popular is C++ and Python, which don’t have C language. Therefore, I conduct coding for the STM32 board (controller board) by using C++, in the embedded computer (mini pc or Ras) we run script python or C++. We will communicate between the PC with STM32 via ROS SERIAL. 
-In order to communicate with ROS, the first step we need do is install the rosserial package. 
+One important thing to know is that ROS supports many programming languages, but the most commonly used are C++ and Python. Therefore, I use C++ to program the STM32 controller board. On the embedded computer (such as a mini PC or Raspberry Pi), we run scripts written in either Python or C++. Communication between the PC and the STM32 board is handled via ROS Serial.
 
 ![image](https://user-images.githubusercontent.com/105471622/196738444-9dd84fe6-eab7-49eb-9ac8-48d59ac44471.png)
 
@@ -34,23 +33,23 @@ Set up TF (Transformation)
 
 # PART 2: KINETIC DIFFERENTIAL DRIVE MOBILE BOT
 
-The common method to get kinetic mobile robot, we consider as the picture it illustrate for basic model kinetic differential drive robot:
+The common method for deriving the kinematics of a mobile robot is to consider the basic model of a differential drive robot, as illustrated in the figure.
 
 ![image](https://user-images.githubusercontent.com/105471622/196739775-1a44c4a5-01c2-4700-9e5d-425551a7759b.png)
 
-We assumed the robot rotate around any point, in instantaneous time we can consider motion is linear, so the linear velocity of the center has the formula:
+We assume that the robot can rotate around any point. At an instantaneous moment, the motion can be considered linear. Therefore, the linear velocity of the robot's center is given by the following formula:
                                                            
 ![image](https://user-images.githubusercontent.com/105471622/196741436-15c1fd77-d795-4a25-a4a0-d9e12acdfa1e.png)    
   
                                                            
-Where v_l,v_r, v is left linear velocity of left,right,center of robot corresponding.
+Where v_l,v_r, v is left linear velocity of left,right,center of robot , respectively.
 
 Have again
 
 ![image](https://user-images.githubusercontent.com/105471622/196741249-5b3fbe59-4a76-44c8-aabf-4c947f89cb83.png)
 
        
-We do some projection velocity vector into flat plane, we obtain the velocity of x-axis and y-axis corresponding
+By projecting the velocity vector onto the flat plane, we obtain the velocity components along the x-axis and y-axis, respectively.
 
 ![image](https://user-images.githubusercontent.com/105471622/196741322-f6b99628-0699-491f-a43b-45fbad0ea03c.png)
 
@@ -58,21 +57,22 @@ We do some projection velocity vector into flat plane, we obtain the velocity of
 
 ![image](https://user-images.githubusercontent.com/105471622/196741850-9b6f7e35-a65c-4105-bda0-21b122a5f165.png)
 
-We can rewrite motion as below matrix form:
+We can rewrite the motion in the matrix form as shown below:
 
 ![image](https://user-images.githubusercontent.com/105471622/196741958-2b4bbf91-5204-40cc-ba7b-d752b0125322.png)
  
  
-From the (3) and (8) equations, we extract:
+From the (3) and (8) equations, we can  extract:
 
 ![image](https://user-images.githubusercontent.com/105471622/196742093-a1ed9284-a8a0-402f-8e99-ec90b3971ee9.png)
 
 ![image](https://user-images.githubusercontent.com/105471622/196742140-82b8dacb-5b20-4bc0-bb91-6ab5284957ba.png)
 
-I introduce the algorithm powerful and popular name DEAD RECKONING.
+I introduce the powerful and popular algorithm known as Dead Reckoning.
 
-In navigation, dead reckoning is the process of calculating the current position of a moving object using a previously determined or fixed position and then combining estimates of speed, direction, and distance, time past. A corresponding term in biology is used to describe the processes by which animals update their estimate of their position or orientation. Inertial navigation systems, which provide directional information, use dead reckoning and are very widely used.
-Similarly, we also apply dead reckoning to the kinetic model of the robot, and it is described as follows:
+In navigation, dead reckoning is the process of calculating the current position of a moving object based on a previously determined or fixed position. This involves combining estimates of speed, direction, distance, and the time elapsed. A corresponding term in biology describes how animals update their estimates of position or orientation. Inertial navigation systems, which provide directional information, rely on dead reckoning and are widely used.
+
+Similarly, we apply dead reckoning to the kinetic model of the robot, which is described as follows:
 
 ![image](https://user-images.githubusercontent.com/105471622/196742559-bfeab541-b302-47aa-b34a-11964c2cefc3.png)
 
@@ -90,8 +90,11 @@ From the figure above we get the following equations:
 
 Wheel Encoder
 
-An encoder is a mechanical motion sensor that generates a digital signal in response to the motion. An electromechanical device capable of converting motion into a digital signal or pulse. Thanks to the encoder, we can know the exact position of the rotation angle of the motor shaft, thereby calculating the displacement of the center of gravity of the robot. More specifically, to calculate equations (13), (14) we need to know the number of pulses reads, and ticks.
-Assuming we have the right and left motor with a resolution , to know how much the wheel has rotated, we need to know how much an angle the wheel rotates according to 1 pulse (tick). For example, the motor uses a resolution of 4000 (pulses/rev), through the transmission ratio of 1:3, this means that the motor turns 3 revolutions the wheel only turns one revolution. Then 1 tick will be calculated as follows:
+An encoder is a mechanical motion sensor that generates a digital signal in response to movement. It is an electromechanical device capable of converting motion into digital signals or pulses. Thanks to the encoder, we can determine the exact rotational angle of the motor shaft, which allows us to calculate the displacement of the robot’s center of gravity.
+
+Specifically, to compute equations (13) and (14), we need to know the number of pulses read (also referred to as ticks).
+
+Assuming we have both a right and left motor with a given resolution, we need to determine how much the wheel rotates per pulse (tick) in order to calculate the total wheel rotation. For example, if the motor has a resolution of 4000 pulses per revolution (pulses/rev), and there is a gear transmission ratio of 1:3, it means that for every 3 revolutions of the motor, the wheel completes one revolution. In this case, the rotation per tick can be calculated as follows:
 
 ![image](https://user-images.githubusercontent.com/105471622/196743383-fd141aac-da01-450d-b8fb-a0bbd2de20ec.png)
 
